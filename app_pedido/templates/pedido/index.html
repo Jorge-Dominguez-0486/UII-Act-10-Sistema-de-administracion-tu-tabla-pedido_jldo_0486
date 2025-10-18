@@ -1,0 +1,106 @@
+{% extends "pedido/base.html" %}
+
+{% block body %}
+<h3 class="m-4">All Pedidos</h3> 
+<div class="row">
+    <div class="cel-12">
+        {% if Productos %}
+        <div class="card bg-light ms-4 me-4 mb-4">
+            <div class="card-header">
+                <i class="fa-solid fa-list fa-lg"></i> Biblia Record
+            </div>
+            <div class="card-body">
+                
+                <p class="card-text">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">pedido_id</th>
+                                    <th scope="col">fecha_hora</th>
+                                    <th scope="col">total_neto</th>
+                                    <th scope="col">metodo_pago</th>
+                                    <th scope="col">estado_pedido</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for pedido in Productos %}
+                                <tr>
+                                    <td>{{ pedido.pedido_id }}</td>
+                                    <td>{{ pedido.fecha_hora }}</td>
+                                    <td>{{ pedido.total_neto }}</td>
+                                    <td>{{ pedido.metodo_pago }}</td>
+                                    <td>{{ pedido.estado_pedido }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-info me-1" data-bs-toggle="modal" data-bs-target="#myModal{{ pedido.pedido_id }}">
+                                            <i class="fa-solid fa-eye fa-lg"></i>
+                                        </button>
+                                        
+                                        <div class="modal" id="myModal{{ pedido.pedido_id }}">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">Pedido ID: {{ pedido.pedido_id }}</h4>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <ul class="list-group">
+                                                            <li>ID de Pedido: <strong>{{ pedido.pedido_id }}</strong></li>
+                                                            <li>Fecha y Hora: <strong>{{ pedido.fecha_hora }}</strong></li>
+                                                            <li>Total Neto: <strong>{{ pedido.total_neto }}</strong></li>
+                                                            <li>Método de Pago: <strong>{{ pedido.metodo_pago }}</strong></li>
+                                                            <li>Estado del Pedido: <strong>{{ pedido.estado_pedido }}</strong></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> 
+
+                                        <a class="btn btn-warning me-1" href="{% url 'edit' pedido.pedido_id %}">
+                                            <i class="fa-solid fa-pen-to-square fa-lg"></i>
+                                        </a>
+
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ pedido.pedido_id }}">
+                                            <i class="fa-solid fa-trash fa-lg"></i>
+                                        </button>
+
+                                        <div class="modal" id="deleteModal{{ pedido.pedido_id }}">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">Delete Pedido ID: {{ pedido.pedido_id }}</h4>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Are you sure you want to delete this Pedido?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <form action="{% url 'delete' pedido.pedido_id %}" method="POST" >
+                                                            {% csrf_token %}
+                                                            <input type="submit" class="btn btn-danger" value="Delete">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </p>
+            </div>
+        </div>
+        {% else %}
+        <h5 class="alert alert-primary ms-4 me-4">No Biblia recors</h5>
+        {% endif %}
+        
+    </div>
+</div>
+{% endblock %}

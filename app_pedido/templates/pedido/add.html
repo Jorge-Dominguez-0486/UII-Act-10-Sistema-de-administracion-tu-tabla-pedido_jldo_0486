@@ -1,0 +1,34 @@
+{% extends "pedido/base.html" %}
+
+{% block body %}
+<h3 class="text-center m-4">Add Pedido
+    {% if success %}
+    <div class="alert alert-succes" role="alert">
+        The New Pedido was added successfully.
+        <a href="{% url 'index' %}" class="alert-line"> Go the Home Page Bible.</a>
+    </div>
+    {% else %}
+    <div class="row justify-content-center">
+        <div class="cel-6">
+            <div class="card bg-light mb-3">
+                <div class="card-header">
+                    <i class="fa-solid fa-address-card fa-lg"></i>Pedido Registration
+                </div>
+                <div class="card-body">
+                    
+                    <form action="{% url 'add' %}" method="POST"> 
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        <button type="submit" class="btn btn-primary">Add</button>
+                        <a href="{% url 'index' %}" class="btn btn-secondary">Cancel</a>
+                            
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</h3>
+
+{% load static %}
+{% endblock %}
